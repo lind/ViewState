@@ -4,12 +4,13 @@ import scala.actors.Actor
 import util.logging._
 
 @serializable @SerialVersionUID(123)
-class Signal {
+case class Signal() {
     var up = false
     var loggable = true
     override def toString = this.getClass.getSimpleName
 }
 
+// not needed..?
 trait StateAction {
     def execute(signal: Signal)
     override def toString = this.getClass.getSimpleName
@@ -60,8 +61,8 @@ abstract class StateMachine extends Actor with Logged {
                     log(signal, "---")
                     act()
                 }
-            case _ =>
-                log(this + " - message not a Signal.")
+            case other =>
+                log(this + " - message not a Signal: " + other)
                 act()
         }
         log(this + " - closing")

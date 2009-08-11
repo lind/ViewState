@@ -35,3 +35,7 @@ def act() {
     }
   }
 }
+
+class ResultControler(port: Int)  extends StateMachine with ConsoleLogger {
+  
+}

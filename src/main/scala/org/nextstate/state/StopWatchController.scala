@@ -38,7 +38,7 @@ class StopWatchController(interaction: StopWatchInteraction) extends StateMachin
     this ! signal
   }
   
-  object StartAction extends StateAction {
+  object StartAction {
     def execute(signal: Signal) {
       	createTimerTask
 
@@ -67,13 +67,14 @@ class StopWatchController(interaction: StopWatchInteraction) extends StateMachin
       def execute(signal: Signal) {
         time.reset
         interaction.result(time.toString)
-      }
-   
+      }   
  }
 
  object SubmitAction extends StateAction {
    def execute(signal: Signal) {
+     log("Sending result to Remote Actor")
      resultActor ! new ResultSignal(this.toString, time.toString)
+     log("Result sent")     
    }
  }
     object TimerAction extends StateAction {

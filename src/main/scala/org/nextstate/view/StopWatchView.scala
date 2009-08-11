@@ -9,16 +9,16 @@ object StopWatchView extends SimpleGUIApplication with StopWatchInteraction with
 
   var controller: StateMachine = null
   
-  def textActionButton(text: String, action: Action): Button = {val b = new Button(action); b.text = text; return b}
+  def createButton(text: String, action: Action): Button = {val b = new Button(action); b.text = text; return b}
    
   // UI Elements (and events)
-  var startButton: Button = textActionButton("Start", Action("StartAction") {	
+  var startButton: Button = createButton("Start", Action("StartAction") {	
 	      controller ! new StartSignal
 	    })
-  var clearBtton: Button = textActionButton("Clear", Action("ClearAction") {	
+  var clearBtton: Button = createButton("Clear", Action("ClearAction") {	
 	      controller ! new ClearSignal
 	    })
-  var submitButton: Button = textActionButton("Submit", Action("SubmitAction") {	
+  var submitButton: Button = createButton("Submit", Action("SubmitAction") {	
 	      controller ! new SubmitSignal
 	    })
   
