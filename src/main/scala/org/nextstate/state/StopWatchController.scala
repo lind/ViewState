@@ -73,7 +73,11 @@ class StopWatchController(interaction: StopWatchInteraction) extends StateMachin
  object SubmitAction extends StateAction {
    def execute(signal: Signal) {
      log("Sending result to Remote Actor")
-     resultActor ! new ResultSignal(this.toString, time.toString)
+     val signal = new ResultSignal(this.toString, time.toString)
+     signal.direction = Direction.Up
+     send(signal)
+     resultActor ! signal
+
      log("Result sent")     
    }
  }

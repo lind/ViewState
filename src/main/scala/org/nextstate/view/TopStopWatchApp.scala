@@ -7,22 +7,27 @@ import org.nextstate.state._
 
 object TopStopWatchApp extends SimpleGUIApplication {
 
-  import TabbedPane._
+  var parentController:StateMachine = new DummyController
+  parentController.start
+
+  var resultController:StateMachine = new ResultController(ResultView)
+  resultController.parent = parentController
+  resultController.start    
+  ResultView.controller = resultController
   
-  val stopWatchView = StopWatchView
-    
-    var controller:StateMachine = new StopWatchController(stopWatchView)
-//    var controller:StateMachine = new DummyController
-    controller.start
-    
-    stopWatchView.controller = controller
+  var stopWatchController:StateMachine = new StopWatchController(StopWatchView)
+  stopWatchController.parent = parentController
+  stopWatchController.start    
+  StopWatchView.controller = stopWatchController
   
+  parentController.children = List(resultController, stopWatchController)
 
   val label = new Label("Status...")
   val tabs = new TabbedPane {
 
+    import TabbedPane._
     pages += new Page("Result", ResultView.ui)
-    pages += new Page("StopWatch", stopWatchView.ui)
+    pages += new Page("StopWatch", StopWatchView.ui)
       
   }
 

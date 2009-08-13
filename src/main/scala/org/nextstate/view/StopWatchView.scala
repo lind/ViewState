@@ -55,7 +55,7 @@ object StopWatchView extends SimpleGUIApplication with StopWatchInteraction with
     contents += submitButton
   }
 
-  // For running the StopWatchView standalone
+  // For testing the StopWatchView standalone with a dummy controller
   def top = new MainFrame {
     title = "StopWatchView"
     

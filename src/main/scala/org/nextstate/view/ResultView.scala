@@ -10,7 +10,7 @@ object ResultView extends SimpleGUIApplication with ResultInteraction with Conso
   var controller: StateMachine = null
      
   // UI Elements (and events)
-  var clearButton: Button = new Button(Action("ClearAction") {	
+  var clearButton: Button = new Button(Action("Clear Result") {	
 	      controller ! new ClearResultSignal
 	    })
   
@@ -27,7 +27,7 @@ object ResultView extends SimpleGUIApplication with ResultInteraction with Conso
     contents += clearButton
   }
 
-  // For running the StopWatchView standalone
+  // For testing the ResultView standalone with a dummy controller
   def top = new MainFrame {
     title = "ResultView"
     
