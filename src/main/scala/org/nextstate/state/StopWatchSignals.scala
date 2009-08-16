@@ -21,3 +21,5 @@ class TimerSignal() extends Signal
 class ResultSignal(val id: String, val result: String) extends Signal
 class ClearResultSignal extends Signal
 class QuitSignal extends Signal
+
+class NewResultInterfaceSignal extends Signal

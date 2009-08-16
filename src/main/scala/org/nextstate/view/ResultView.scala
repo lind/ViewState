@@ -5,9 +5,19 @@ import util.logging._
 import org.nextstate.interaction._
 import org.nextstate.state._
 
-object ResultView extends SimpleGUIApplication with ResultInteraction with ConsoleLogger {
-
+trait InteractionView {
   var controller: StateMachine = null
+  var ui: Component = null
+}
+object TheResultView extends ResultView {
+  // For testing the ResultView standalone with a dummy controller
+    controller = new DummyController
+    controller.start
+
+} 
+class ResultView extends SimpleGUIApplication with InteractionView with ResultInteraction with ConsoleLogger {
+
+//  var controller: StateMachine = null
      
   // UI Elements (and events)
   var clearButton: Button = new Button(Action("Clear Result") {	
@@ -22,18 +32,14 @@ object ResultView extends SimpleGUIApplication with ResultInteraction with Conso
   } 
 
   // add contnets to layout
-  val ui = new FlowPanel {
+  ui = new FlowPanel {
     contents += result
     contents += clearButton
   }
-
-  // For testing the ResultView standalone with a dummy controller
-  def top = new MainFrame {
-    title = "ResultView"
-    
-    controller = new DummyController
-    controller.start
   
+  override def top = new MainFrame {
+    title = "ResultView"
+      
    	contents = ui
-  }
+  }  
 }

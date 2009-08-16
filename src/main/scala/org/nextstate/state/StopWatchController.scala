@@ -14,9 +14,9 @@ class StopWatchController(interaction: StopWatchInteraction) extends StateMachin
   var timer = new Timer;
   var callbackTimer: TimerTask = null;
 
-  val resultActor = select(Node("127.0.0.1", 9010), 'Result)
-  
-  log("resultActor:" + resultActor)
+//  val resultActor = select(Node("127.0.0.1", 9010), 'Result)
+//  
+//  log("resultActor:" + resultActor)
   
   object StoppedState extends State
   object RunningState extends State
@@ -72,13 +72,13 @@ class StopWatchController(interaction: StopWatchInteraction) extends StateMachin
 
  object SubmitAction extends StateAction {
    def execute(signal: Signal) {
-     log("Sending result to Remote Actor")
+//     log("Sending result to Remote Actor")
      val signal = new ResultSignal(this.toString, time.toString)
      signal.direction = Direction.Up
      send(signal)
-     resultActor ! signal
+//     resultActor ! signal
 
-     log("Result sent")     
+//     log("Result sent")     
    }
  }
     object TimerAction extends StateAction {

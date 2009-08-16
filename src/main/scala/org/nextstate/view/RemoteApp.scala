@@ -6,7 +6,7 @@ object RemoteApp extends SimpleGUIApplication {
   def top = new MainFrame {
     title = "Result Application"
     
-    val resultView = ResultView
+    val resultView = new ResultView
     
     import org.nextstate.state._
     var resultController = new ResultController(resultView)
