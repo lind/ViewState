@@ -3,35 +3,32 @@ package org.nextstate.state
 import scala.actors.Actor
 import util.logging._
 
+// logs the active state configuration
+class StateConfigurationSignal extends Signal(Direction.Down, false) {
+  var level: Int = 0
+}
+
+class QuitSignal extends Signal
+
 object Direction extends Enumeration {
   val Up, Down, None = Value
 }
 
 @serializable @SerialVersionUID(123)
-case class Signal() {
-  // TODO remove and use direction
-//    var up = true
-    var direction = Direction.None // Default is to not forward the signal
-    var loggable = true
+class Signal(var direction: Direction.Value, var loggable: Boolean) {
+	def this() = this(Direction.None, true)
+//    var direction = Direction.None // Default is to not forward the signal
     override def toString = this.getClass.getSimpleName
 }
-
-// not needed..?
-trait StateAction {
-    def execute(signal: Signal)
-    override def toString = this.getClass.getSimpleName
-}
-
-//trait State {
-//    def execute(signal: Signal): State
-//}
 
 // Transitions contains all transitions from one state.
+// TODO: not needed - remove
 abstract class Transitions {
     def execute(signal: Signal): State
     override def toString = this.getClass.getName
 }
 
+// TODO: just needed as a trait
 class State extends Logged { // extends State
     var transitions: Transitions = null
 
@@ -53,12 +50,19 @@ abstract class StateMachine extends Actor with Logged {
     var activeState: State = null
     var parent: StateMachine = null
     var children: List[StateMachine] = null
+    
     def log(signal: Signal, msg: String) {
       if (signal.loggable) log(msg)
     }
     
     def act() {
         react {
+            case signal: StateConfigurationSignal  =>
+                if (signal.level == 0) {log("--- Active state configuration for the application: ---")}               
+                log("--" * signal.level + this + " -> " + activeState + " - Thread: " + Thread.currentThread.getId)
+                signal.level = signal.level + 1 
+	            forwardSignal(signal)
+	            act()
             case signal: Signal  =>
                 log(signal, this + " - Signal:" + signal)
                 if (null != activeState) {
@@ -94,7 +98,7 @@ abstract class StateMachine extends Actor with Logged {
                 	}
                 }
 //            case signal:Signal if (Direction.None == signal.direction) => // Do nothing
-            case _ => log(signal, this + " - forwardSignal: None")
+            case _ => //log(signal, this + " - forwardSignal: None")
         }
     }
     override def toString() = this.getClass.getSimpleName

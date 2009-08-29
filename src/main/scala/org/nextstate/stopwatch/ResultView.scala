@@ -1,24 +1,18 @@
-package org.nextstate.view
+package org.nextstate.stopwatch
 
 import swing._
 import util.logging._
-import org.nextstate.interaction._
 import org.nextstate.state._
+import org.nextstate.view._
 
-trait InteractionView {
-  var controller: StateMachine = null
-  var ui: Component = null
-}
+// For testing the view with a dummy controller
 object TheResultView extends ResultView {
-  // For testing the ResultView standalone with a dummy controller
     controller = new DummyController
     controller.start
 
 } 
 class ResultView extends SimpleGUIApplication with InteractionView with ResultInteraction with ConsoleLogger {
 
-//  var controller: StateMachine = null
-     
   // UI Elements (and events)
   var clearButton: Button = new Button(Action("Clear Result") {	
 	      controller ! new ClearResultSignal
@@ -37,7 +31,7 @@ class ResultView extends SimpleGUIApplication with InteractionView with ResultIn
     contents += clearButton
   }
   
-  override def top = new MainFrame {
+  def top = new MainFrame {
     title = "ResultView"
       
    	contents = ui

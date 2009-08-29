@@ -1,1 +1,30 @@
-Test
+# To run the stop watch from the scala console
+mvn scala:console
+
+# Objects for the applications and signals are in the default package.
+# Start the stopwatch application with controller
+# StopWatchApp 
+StopWatchApp.top.visible = true
+StopWatchApp.controller ! StartSignal
+StopWatchApp.controller ! StopSignal
+
+# Starts the TopStopWatch. A hierarchy with a top controller at the top and with a stopwatch and result as children.
+# TopStopWatch
+TopStopWatch.top.visible = true
+TopStopWatch.stopWatchController ! StartSignal
+TopStopWatch.parentController ! NewResultInterfaceSignal
+
+
+# 
+
+
+# To only start the ResultApp
+ResultApp.top.visible = true
+ResultApp.resultView.result("Hei")
+ResultApp.controller ! ClearResultSignal
+
+
+# To log the state configuration for the application
+TopStopWatch.parentController ! StateConfigurationSignal
+
+TopStopWatch.stopWatchController ! StateConfigurationSignal

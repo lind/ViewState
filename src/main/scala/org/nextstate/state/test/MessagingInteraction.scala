@@ -1,4 +1,5 @@
-package org.nextstate.interaction
+package org.nextstate.state.test;
+
 
 trait MessagingInteraction {
 

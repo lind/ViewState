@@ -1,19 +1,20 @@
-package org.nextstate.view
-
 import swing._
 import event._
 import Swing._
 import org.nextstate.state._
+import org.nextstate.view._
+import org.nextstate.stopwatch._
 
-trait AddableInterface {
-  def addPage(view: InteractionView)
-}
+/*
+val app = org.nextstate.view.TopStopWatchApp
 
-// val app = org.nextstate.view.TopStopWatchApp
-// app.top.visible = true
-// app.stopWatchController ! new org.nextstate.state.StartSignal
-// app.parentController ! new org.nextstate.state.NewResultInterfaceSignal
-object TopStopWatchApp extends SimpleGUIApplication with AddableInterface {
+TopStopWatch.top.visible = true
+TopStopWatch.stopWatchController ! StartSignal
+TopStopWatch.parentController ! NewResultInterfaceSignal
+TopStopWatch.parentController ! StateConfigurationSignal
+TopStopWatch.stopWatchController ! new org.nextstate.state.StateConfigurationSignal
+*/
+object TopStopWatch extends SimpleGUIApplication with AddableInterface {
 
   var parentController:StateMachine = new TopController(this)
   parentController.start
@@ -24,16 +25,17 @@ object TopStopWatchApp extends SimpleGUIApplication with AddableInterface {
   resultController.start
   resultView.controller = resultController
   
-  var stopWatchController:StateMachine = new StopWatchController(StopWatchView)
+  val stopWatchView = new StopWatchView
+  var stopWatchController:StateMachine = new StopWatchController(stopWatchView)
   stopWatchController.parent = parentController
   stopWatchController.start    
-  StopWatchView.controller = stopWatchController
+  stopWatchView.controller = stopWatchController
   
   parentController.children = List(resultController, stopWatchController)
 
   import TabbedPane._
   def addPage(view: InteractionView) {
-    tabs.pages += new Page("addPage", view.ui)
+    tabs.pages += new Page(view.getClass.getSimpleName, view.ui)
     view.controller.parent = parentController
     parentController.children =  parentController.children ::: List(view.controller)
   }
@@ -41,7 +43,7 @@ object TopStopWatchApp extends SimpleGUIApplication with AddableInterface {
   val label = new Label("Status...")
 
   val tabs = new TabbedPane {
-    pages += new Page("StopWatch", StopWatchView.ui)      
+    pages += new Page("StopWatch", stopWatchView.ui)      
     pages += new Page("Result", resultView.ui)
   }
 
@@ -54,4 +56,5 @@ object TopStopWatchApp extends SimpleGUIApplication with AddableInterface {
     title = "TopStopWatch Application"
     contents = ui
   }
-}
+}  
+

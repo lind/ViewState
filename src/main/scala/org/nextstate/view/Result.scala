@@ -5,6 +5,7 @@ import scala.actors.Actor._
 import scala.actors.remote.RemoteActor._
 import util.logging._
 import org.nextstate.state._
+import org.nextstate.stopwatch._
 
 object RemoteResultApp extends ConsoleLogger {
     def main(args: Array[String]) : Unit = {

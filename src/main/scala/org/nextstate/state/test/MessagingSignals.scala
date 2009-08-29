@@ -1,4 +1,6 @@
-package org.nextstate.state
+package org.nextstate.state.test
+
+import org.nextstate.state._
 
 case class ClearMessageSignal() extends Signal
 case class SendMessageSignal() extends Signal

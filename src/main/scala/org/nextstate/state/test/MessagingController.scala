@@ -1,20 +1,21 @@
-package org.nextstate.state
+package org.nextstate.state.test;
 
 import util.logging._
-import org.nextstate.state._
+import scala.actors.remote.Node
+import scala.actors.remote.RemoteActor._
 
 class MessagingController extends StateMachine with ConsoleLogger {
 
   object ActiveState extends State
   
-  object SendMessageAction extends StateAction {
+  object SendMessageAction {
     def execute(signal: Signal) {
       log("SendMessageAction")
 //      resultActor ! new ResultSignal(this.toString, time.toString)
     }
   }
 
-  object ClearAction extends StateAction {
+  object ClearAction {
     def execute(signal: Signal) {
       log("ClearAction")
 //      resultActor ! new ResultSignal(this.toString, time.toString)
