@@ -6,29 +6,22 @@ import scala.actors.remote.RemoteActor._
 import org.nextstate.view._
 import org.nextstate.stopwatch._
 
-/*
-NewResultInterfaceSignal
- */
-class TopController(val topApp: AddableInterface) extends StateMachine with ConsoleLogger {
+class TopController(val topApp: AddableInterface, val ip: String, val port: Int) extends StateMachine with ConsoleLogger {
 
-  val resultActor = select(Node("127.0.0.1", 9010), 'Result)
+  val resultActor = select(Node(ip, port), 'Result)
   
   log("resultActor:" + resultActor)
-
-  object TopState extends State
 
   object BounceAction {
 	def execute(signal: Signal) {
       log(this + " - Signal received: " + signal.toString)
-      log("Sending result to Remote Actor")
       resultActor ! signal
       signal.direction = Direction.Down
     }   
   }
 
-    // Transitions
-    object TopTransitions extends Transitions {
-        def execute(signal: Signal): State = {
+    object TopState extends State {
+       override def execute(signal: Signal): State = {
             signal match {
               case signal: NewResultInterfaceSignal => {
                 val resultView = new ResultView
@@ -39,11 +32,11 @@ class TopController(val topApp: AddableInterface) extends StateMachine with Cons
                 return TopState}
               case _ => BounceAction.execute(signal); return TopState                                                        
             }
-        }
+       }          
     }
 
+
     // State configurations
-    TopState.transitions = TopTransitions
     activeState = TopState
 
 }

@@ -1,5 +1,4 @@
 # To run the stop watch from the scala console
-mvn clean install
 mvn scala:console
 
 # Objects for the applications and signals are in the default package.

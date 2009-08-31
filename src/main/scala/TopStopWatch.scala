@@ -16,7 +16,7 @@ TopStopWatch.stopWatchController ! new org.nextstate.state.StateConfigurationSig
 */
 object TopStopWatch extends SimpleGUIApplication with AddableInterface {
 
-  var parentController:StateMachine = new TopController(this)
+  var parentController:StateMachine = new TopController(this, "127.0.0.1", 9010)
   parentController.start
 
   val resultView = new ResultView

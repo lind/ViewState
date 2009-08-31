@@ -17,19 +17,18 @@ object Direction extends Enumeration {
 @serializable @SerialVersionUID(123)
 class Signal(var direction: Direction.Value, var loggable: Boolean) {
 	def this() = this(Direction.None, true)
-//    var direction = Direction.None // Default is to not forward the signal
     override def toString = this.getClass.getSimpleName
 }
 
 // Transitions contains all transitions from one state.
-// TODO: not needed - remove
+// TODO: remove - not needed - just use match-case in state instead
 abstract class Transitions {
     def execute(signal: Signal): State
     override def toString = this.getClass.getName
 }
 
 // TODO: just needed as a trait
-class State extends Logged { // extends State
+trait State extends Logged { // extends State
     var transitions: Transitions = null
 
     def execute(signal: Signal): State = {
@@ -114,7 +113,7 @@ override def act() {
       receive {
         case signal: QuitSignal =>
           Console.println("RemoteResultActor: stop")
-          exit()         // (10)
+          exit()
         case signal: Signal =>
           log(this + " - Signal received: " + signal)
           signal.direction = Direction.Down
